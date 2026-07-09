@@ -9,7 +9,8 @@ struct SettingsView: View {
     @State private var saved = false
     @State private var copied = false
     @State private var launchAtLogin = LaunchAtLogin.isEnabled
-    @State private var launchAtLoginError = false
+    @State private var launchAtLoginMessage: String?
+    @State private var needsApproval = false
 
     init(model: UsageModel) {
         self._model = ObservedObject(wrappedValue: model)
@@ -24,19 +25,34 @@ struct SettingsView: View {
                 Toggle("Launch GoUsage at login", isOn: Binding(
                     get: { launchAtLogin },
                     set: { newValue in
-                        do {
-                            try LaunchAtLogin.setEnabled(newValue)
-                            launchAtLogin = newValue
-                            launchAtLoginError = false
-                        } catch {
-                            launchAtLoginError = true
+                        if let msg = LaunchAtLogin.setEnabled(newValue) {
                             launchAtLogin = LaunchAtLogin.isEnabled
+                            if msg == "needs-approval" {
+                                needsApproval = true
+                                launchAtLoginMessage = nil
+                            } else {
+                                needsApproval = false
+                                launchAtLoginMessage = msg
+                            }
+                        } else {
+                            launchAtLogin = newValue
+                            needsApproval = false
+                            launchAtLoginMessage = nil
                         }
                     }
                 ))
-                if launchAtLoginError {
-                    Text("Couldn't change launch-at-login (try via System Settings → General → Login Items).")
-                        .font(.caption).foregroundStyle(.red)
+                if needsApproval {
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Text("Click below to allow GoUsage in Login Items, then toggle again.")
+                            .font(.caption).foregroundStyle(.orange)
+                        Spacer()
+                    }
+                    Button("Open System Settings → Login Items") {
+                        LaunchAtLogin.openSystemSettings()
+                    }
+                }
+                if let msg = launchAtLoginMessage {
+                    Text(msg).font(.caption).foregroundStyle(.red)
                 }
             }
 

@@ -21,10 +21,5 @@ struct GoUsageApp: App {
             }
         }
         .menuBarExtraStyle(.window)
-
-        WindowGroup("Go Usage Settings", id: "settings") {
-            SettingsView(model: model)
-        }
-        .windowResizability(.contentSize)
     }
 }

@@ -3,7 +3,6 @@ import AppKit
 
 struct UsageView: View {
     @ObservedObject var model: UsageModel
-    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -32,7 +31,7 @@ struct UsageView: View {
             HStack(spacing: 8) {
                 Button("Refresh") { Task { await model.refresh() } }
                     .disabled(model.isFetching)
-                Button("Settings…") { openWindow(id: "settings") }
+                Button("Settings…") { SettingsWindow.openOrFocus(model: model) }
                 Spacer()
                 Button("Quit") { NSApplication.shared.terminate(nil) }
             }
