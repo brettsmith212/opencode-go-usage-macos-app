@@ -6,14 +6,14 @@ A macOS menu-bar app that shows your [OpenCode Go](https://opencode.ai/docs/go) 
 
 ## Why
 
-OpenCode Go gives you three usage windows — a 5-hour rolling limit ($12), a weekly limit ($30), and a monthly limit ($60). The only official way to see them is the web console at `opencode.ai/auth`, which requires opening a browser and refreshing. This app puts those three numbers in your menu bar so you always know how close you are to throttling.
+OpenCode Go gives you three usage windows — rolling, weekly, and monthly. The only official way to see them is the web console at `opencode.ai/auth`, which requires opening a browser and refreshing. This app puts their usage in your menu bar so you always know how close you are to throttling.
 
 OpenCode does not expose a public API for usage. This app works by scraping the server-rendered Go dashboard HTML using your authenticated session cookie, then parsing the inlined SolidStart `lite.subscription.get` payload.
 
 ## What it shows
 
 - **Menu bar**: 3-segment gauge (green/orange/red by threshold) or the text `Go` — toggle in Settings.
-- **Dropdown**: three rows — Rolling (5h, $12), Weekly ($30), Monthly ($60) — each with `%`, a progress bar, and a humanized reset countdown (e.g. `resets in 2h 45m` / `3d 18h` / `14d 15h`).
+- **Dropdown**: three rows — Rolling (5h), Weekly, and Monthly — each with `%`, a progress bar, and a humanized reset countdown (e.g. `resets in 2h 45m` / `3d 18h` / `14d 15h`).
 - **Header**: workspace region(s) and a "using Zen balance" indicator when the fallback-to-balance toggle is on.
 - **Footer**: Refresh now · Settings… · Quit.
 

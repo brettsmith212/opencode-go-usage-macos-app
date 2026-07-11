@@ -8,9 +8,9 @@ struct UsageView: View {
         VStack(alignment: .leading, spacing: 12) {
             header
 
-            UsageRow(title: "Rolling", subtitle: "5-hour window", limit: "$12", usage: model.payload?.rollingUsage)
-            UsageRow(title: "Weekly", subtitle: "resets at week boundary", limit: "$30", usage: model.payload?.weeklyUsage)
-            UsageRow(title: "Monthly", subtitle: "resets on sub day", limit: "$60", usage: model.payload?.monthlyUsage)
+            UsageRow(title: "Rolling", subtitle: "5-hour window", usage: model.payload?.rollingUsage)
+            UsageRow(title: "Weekly", subtitle: "resets at week boundary", usage: model.payload?.weeklyUsage)
+            UsageRow(title: "Monthly", subtitle: "resets on sub day", usage: model.payload?.monthlyUsage)
 
             Divider()
 
@@ -64,16 +64,12 @@ struct UsageView: View {
 struct UsageRow: View {
     let title: String
     let subtitle: String
-    let limit: String
     let usage: WindowUsage?
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 1) {
-                HStack(spacing: 6) {
-                    Text(title).font(.system(.body, design: .rounded))
-                    Text(limit).font(.caption2).foregroundStyle(.secondary)
-                }
+                Text(title).font(.system(.body, design: .rounded))
                 Text(subtitle).font(.caption2).foregroundStyle(.secondary)
                 if let u = usage, u.status == "rate-limited" {
                     Text("rate-limited").font(.caption2).foregroundStyle(.red)
