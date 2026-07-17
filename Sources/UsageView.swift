@@ -38,6 +38,11 @@ struct UsageView: View {
         }
         .padding(16)
         .frame(width: 320)
+        .onAppear {
+            if model.lastFetch == nil {
+                model.start()
+            }
+        }
     }
 
     private var header: some View {
